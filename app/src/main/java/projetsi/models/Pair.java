@@ -6,27 +6,27 @@ public class Pair<F, S> {
     private S second;
 
     /**
-     * @param f The first element
-     * @param s The second element
+     * @param first The first element
+     * @param second The second element
      */
-    public Pair(F f, S s) {
-        first = f;
-        second = s;
+    public Pair(F first, S second) {
+        this.first = first;
+        this.second = second;
     }
 
     public F getFirst() {
         return first;
     }
 
-    public void setFirst(F f) {
-        first = f;
+    public void setFirst(F first) {
+        this.first = first;
     }
 
     public S getSecond() {
         return second;
     }
 
-    public void setSecond(S s) {
-        second = s;
+    public void setSecond(S second) {
+        this.second = second;
     }
 }
