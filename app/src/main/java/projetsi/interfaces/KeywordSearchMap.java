@@ -21,6 +21,8 @@ import projetsi.models.Pair;
  *     ]
  * ]
  */
-public interface KeywordSearchMap {
-    Pair<? extends SortedSet<String>, ? extends Set<Pair<? extends Map<String, String>, Integer>>> get(List<String> keywords);
+public interface KeywordSearchMap extends Iterable<Pair<? extends SortedSet<String>, ? extends Set<Pair<? extends Map<String, String>, Integer>>>>{
+    Pair<? extends SortedSet<String>, ? extends Set<Pair<? extends Map<String, String>, Integer>>> get(SortedSet<String> keywords);
+
+
 }
