@@ -2,6 +2,7 @@ package projetsi.interfaces;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.List;
 import java.util.SortedSet;
 
 import projetsi.models.Pair;
@@ -20,6 +21,6 @@ import projetsi.models.Pair;
  *     ]
  * ]
  */
-public interface KeywordSearchMap extends Map<String, Pair<SortedSet<String>, Set<Pair<Map<String, String>, Integer>>>> {
-    // Empty interface : used to specify the implementation needed for a KeywordSearchMap (see Marker interface pattern)
+public interface KeywordSearchMap {
+    Pair<? extends SortedSet<String>, ? extends Set<Pair<? extends Map<String, String>, Integer>>> get(List<String> keywords);
 }
