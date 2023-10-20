@@ -14,6 +14,14 @@ class SimpleFileMetadataWithScoreTest {
     }
 
     @Test
+    void simpleFileMetadataWithScoreSetScoreWithNegativeScore() {
+        SimpleFileMetadataWithScore classUnderTest = new SimpleFileMetadataWithScore();
+        assertThrows(IllegalArgumentException.class, () -> {
+            classUnderTest.setScore(-1);
+        }, "setScore should throw IllegalArgumentException if score is negative");
+    }
+
+    @Test
     void simpleFileMetadataWithScoreAddMetadata() {
         SimpleFileMetadataWithScore classUnderTest = new SimpleFileMetadataWithScore();
         classUnderTest.addMetadata("test_file", "test_content");
