@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper;
-
 import projetsi.interfaces.FileMetadataWithScore;
 
 public class SimpleFileMetadataWithScore implements FileMetadataWithScore {
