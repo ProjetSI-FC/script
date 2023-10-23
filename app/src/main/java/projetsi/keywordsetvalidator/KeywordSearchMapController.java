@@ -11,16 +11,9 @@ import projetsi.models.SimpleFileMetadataWithScore;
 
 public class KeywordSearchMapController {
 
-    private KeywordSearchHashMap keywordsMap;
-
-    private int threshold;
-
-    public KeywordSearchMapController(int threshold) {
-        keywordsMap = new KeywordSearchHashMap();
-        this.threshold = threshold;
-    }
-
-    public void insertAllInteresting(SpotfileKeywordsPermutations permutations) {
+    public KeywordSearchMap createSearchMapFromKeywordsPermutations(SpotfileKeywordsPermutations permutations,
+            int threshold) {
+        KeywordSearchHashMap keywordsMap = new KeywordSearchHashMap();
         for (Pair<SortedSet<String>, Integer> permutation : permutations) {
             if (permutation.getSecond() >= threshold) {
                 SimpleFileMetadataWithScore metadata = new SimpleFileMetadataWithScore();
@@ -31,9 +24,6 @@ public class KeywordSearchMapController {
                 keywordsMap.add(permutation.getFirst(), metadata);
             }
         }
-    }
-
-    public KeywordSearchMap getKeywordsMap() {
         return keywordsMap;
     }
 }
