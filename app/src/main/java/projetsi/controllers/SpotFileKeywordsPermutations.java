@@ -126,7 +126,7 @@ public class SpotFileKeywordsPermutations implements SpotfileKeywordsPermutation
     }
     
     /**
-     * Converts to string and displays
+     * Converts to string and displays the object
      */
     public String toString(){
         String str = new String();
