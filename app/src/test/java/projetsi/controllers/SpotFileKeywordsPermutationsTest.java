@@ -43,60 +43,77 @@ class SpotFileKeywordsPermutationsTest {
      */
     @Test
     void SpotFileKeywordsPermutationsTestComputePermutations(){
-        /* Creates mock object */
+        /* Creates mock object and put in keywords */
         SpotFileKeywordsPermutations classUnderTest = new SpotFileKeywordsPermutations();
         Map<String, Integer> keywordsMap = new HashMap<>();
         keywordsMap.put("rouge", 0);
         keywordsMap.put("president", 0);
         keywordsMap.put("education", 0);
         classUnderTest.setKeywordsMap(keywordsMap);
-        classUnderTest.addMetadata("fichier test", "video");
-        classUnderTest.addCombination(new Combination(
-            new TreeSet<>(
-                Arrays.asList("rouge", "president", "education")
-            ),0
-        ));
         /* Computes the combinations */
         classUnderTest.computePermutations();
         /* Display the computed combinations */
         for (Pair<SortedSet<String>, Integer> pair : classUnderTest) {
             System.out.println((new Combination(pair)).toString());
         }
-        // CombinationsList combinations = new CombinationsList(generateStubCombinations());
-        // assertEquals(classUnderTest.getPermutations(), combinations,"should return true if same combinations");
-        assertNotNull(classUnderTest.getClass(), "avoiding warning to commit properly");
+        /* Create all the combinations manually and put them into a list */
+        List<Combination> combinationsList = createMockCombinationList();
+        /* Compare the lists of combinations */
+        boolean shouldBeTrueIfCombinationsAreEqual = true;
+        for (Combination combination : combinationsList) {
+            shouldBeTrueIfCombinationsAreEqual = classUnderTest.getPermutations().contains(combination);
+        }
+        assertTrue(shouldBeTrueIfCombinationsAreEqual,"");
     }
 
-    // private List<Combination> generateStubCombinations(){
-    //     List<Combination> combinations = new ArrayList<>();
-    //     Combination combination1 = new Combination();
-    //     combination1.addWord("education");
-    //     combinations.add(combination1);
-    //     Combination combination2 = new Combination();
-    //     combination2.addWord("rouge");
-    //     combinations.add(combination2);
-    //     Combination combination3 = new Combination();
-    //     combination3.addWord("education");
-    //     combination3.addWord("rouge");
-    //     combinations.add(combination3);
-    //     Combination combination4 = new Combination();
-    //     combination4.addWord("president");
-    //     combinations.add(combination4);
-    //     Combination combination5 = new Combination();
-    //     combination5.addWord("education");
-    //     combination5.addWord("president");
-    //     combinations.add(combination5);
-    //     Combination combination6 = new Combination();
-    //     combination6.addWord("president");
-    //     combination6.addWord("rouge");
-    //     combinations.add(combination6);
-    //     Combination combination7 = new Combination();
-    //     combination7.addWord("education");
-    //     combination7.addWord("president");
-    //     combination7.addWord("rouge");
-    //     combinations.add(combination7);
-    //     return combinations;
-    // }
+    /**
+     * Fonction that create the mock combinations List
+     * @return
+     */
+    private List<Combination> createMockCombinationList(){
+        List<Combination> combinationsList = new ArrayList<>();
+        combinationsList.add(new Combination(
+            new TreeSet<>(
+                Arrays.asList("education", "president", "rouge")
+            ),0
+        ));
+        combinationsList.add(new Combination(
+            new TreeSet<>(
+                Arrays.asList("education")
+            ),0
+        ));
+        combinationsList.add(new Combination(
+            new TreeSet<>(
+                Arrays.asList("rouge")
+            ),0
+        ));
+        combinationsList.add(new Combination(
+            new TreeSet<>(
+                Arrays.asList("education", "rouge")
+            ),0
+        ));
+        combinationsList.add(new Combination(
+            new TreeSet<>(
+                Arrays.asList("president")
+            ),0
+        ));
+        combinationsList.add(new Combination(
+            new TreeSet<>(
+                Arrays.asList("education", "president")
+            ),0
+        ));
+        combinationsList.add(new Combination(
+            new TreeSet<>(
+                Arrays.asList("president", "rouge")
+            ),0
+        ));
+        combinationsList.add(new Combination(
+            new TreeSet<>(
+                Arrays.asList("education", "president", "rouge")
+            ),0
+        ));
+        return combinationsList;
+    }
 }
 
 
