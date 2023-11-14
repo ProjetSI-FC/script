@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,6 +17,7 @@ import projetsi.models.SimpleSpotFileKeywords;
 public class SpotParser {
 
     public static final String SPOT_KEYWORDS = "keywords";
+    public static final String SPOT_FILE_KEY = "file";
 
     public JSONObject getJSONSpot(InputStream spotFileStream) {
         JSONTokener tokener = new JSONTokener(spotFileStream);
@@ -50,8 +52,9 @@ public class SpotParser {
                 keywordsList.add(new Pair<>(keyword, 1));
             }
         }
+        Map<String, String> spotFileMetadatas = Map.of("file", spotJSON.getString(SPOT_FILE_KEY));
 
         // Add the list of keywords and their occurrences to the SpotFileKeywords object
-        return new SimpleSpotFileKeywords(keywordsList, null);
+        return new SimpleSpotFileKeywords(keywordsList, spotFileMetadatas);
     }
 }
