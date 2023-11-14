@@ -3,7 +3,7 @@ package projetsi.models;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PairTest {
+class PairTest {
     
     @Test void pairGetFirstAndSecond() {
         Pair<String, Integer> classUnderTest = new Pair<>("first", 2);
