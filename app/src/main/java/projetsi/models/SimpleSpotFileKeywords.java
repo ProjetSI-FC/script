@@ -19,7 +19,7 @@ public class SimpleSpotFileKeywords implements SpotFileKeywords {
     public List<Pair<String, Integer>> getKeywordsList() {
         if (keywordsList != null)
             return keywordsList;
-        throw new UnsupportedOperationException("Unimplemented method 'getKeywordsList'");
+        throw new NullPointerException("Uninitialized field 'keywordsList'");
     }
 
     public void setKeywordsList(List<Pair<String, Integer>> keywordsList) {
@@ -30,7 +30,7 @@ public class SimpleSpotFileKeywords implements SpotFileKeywords {
     public Map<String, String> getSpotFileMetadatas() {
         if (spotFileMetadatas != null)
             return spotFileMetadatas;
-        throw new UnsupportedOperationException("Unimplemented method 'getSpotFileMetadatas'");
+        throw new NullPointerException("Uninitialized field 'spotFileMetadatas'");
     }
 
     public void setSpotFileMetadatas(Map<String, String> spotFileMetadatas) {
