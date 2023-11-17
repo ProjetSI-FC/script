@@ -1,5 +1,6 @@
 package projetsi.models;
 
+import projetsi.interfaces.SpotFileKeywords;
 import projetsi.interfaces.SpotfileKeywordsPermutations;
 
 import java.util.ArrayList;
@@ -21,6 +22,19 @@ public class SpotFileKeywordsPermutations implements SpotfileKeywordsPermutation
     public SpotFileKeywordsPermutations() {
         this.keywordsMap = new HashMap<>();
         this.SpotFileMetadatas = new HashMap<>();
+        this.permutations = new ArrayList<>();
+    }
+
+    /***
+     * Constructor with a SpotFileKeywords object
+     * 
+     * @param spotFileKeywords
+     */
+    public SpotFileKeywordsPermutations(SpotFileKeywords spotFileKeywords) {
+        for (Pair<String, Integer> pair : spotFileKeywords.getKeywordsList()) {
+            this.keywordsMap.put(pair.getFirst(), pair.getSecond());
+        }
+        this.SpotFileMetadatas = spotFileKeywords.getSpotFileMetadatas();
         this.permutations = new ArrayList<>();
     }
 
