@@ -6,3 +6,7 @@ build
 
 # Ignore binaries
 app/bin
+
+# Ignore all .DS_Store
+.DS_Store
+**/.DS_Store
