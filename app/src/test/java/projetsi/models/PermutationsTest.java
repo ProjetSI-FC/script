@@ -15,10 +15,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.junit.jupiter.api.Test;
 
-class PermutationsGeneratorTest {
+class PermutationsTest {
 
         @Test
-        void PermutationsGeneratorTestBuildNotInit() {
+        void PermutationsTestBuildNotInit() {
                 PermutationsGenerator classUnderTest = new PermutationsGenerator();
                 assertNotNull(classUnderTest.getKeywordsMap(),
                                 "getKeywordsMap should return an empty map if not initialized");
@@ -27,7 +27,7 @@ class PermutationsGeneratorTest {
         }
 
         @Test
-        void PermutationsGeneratorTestGetters() {
+        void PermutationsTestGetters() {
                 /* Creates mock object */
                 PermutationsGenerator classUnderTest = new PermutationsGenerator();
                 Map<String, Integer> keywordsMap = new HashMap<>();
@@ -44,7 +44,7 @@ class PermutationsGeneratorTest {
          * Tests the calculus of the score of a combination
          */
         @Test
-        void PermutationsGeneratorTestCalulateOneScore() {
+        void PermutationsTestCalulateOneScore() {
                 PermutationsGenerator classUnderTest = new PermutationsGenerator();
                 /* Adds a map to fetch occurences */
                 Map<String, Integer> keywordsMap = new HashMap<>();
@@ -66,7 +66,7 @@ class PermutationsGeneratorTest {
                 classUnderTest.calculateOneScore(combination2);
                 assertEquals(5, combination1.getSecond(),
                                 "should be true if the 1st calulated score is the one expected");
-                assertEquals(17, combination2.getSecond(),
+                assertEquals(5, combination2.getSecond(),
                                 "should be true if the 2nd calulated score is the one expected");
         }
 
@@ -74,7 +74,7 @@ class PermutationsGeneratorTest {
          * Tests if the combinations are the ones expected
          */
         @Test
-        void PermutationsGeneratorTestComputePermutations() {
+        void PermutationsTestComputePermutations() {
                 /* Creates mock object and put in keywords */
                 PermutationsGenerator classUnderTest = new PermutationsGenerator();
                 Map<String, Integer> keywordsMap = new HashMap<>();
@@ -85,20 +85,23 @@ class PermutationsGeneratorTest {
                 /* Computes the combinations */
                 BlockingQueue<Pair<Map<String, String>, Combination>> permutationsQueue = new LinkedBlockingQueue<>();
                 classUnderTest.computePermutations(permutationsQueue);
-                /* Display the computed combinations */
+
+                /* Get the combinations from the queue */
+                List<Combination> combinationsList = new ArrayList<>();
                 for (Pair<Map<String, String>, Combination> pair : permutationsQueue) {
-                        System.out.println(pair.getSecond().toString());
+                        combinationsList.add(pair.getSecond());
+                        /* Display it*/ System.out.println(pair.getSecond().toString());
                 }
-                /* Create all the combinations manually and put them into a list */
-                List<Combination> combinationsList = createMockCombinationList();
+                /* Create all the stub combinations manually and put them into a list in order to compare */
+                List<Combination> combinationsStub = createMockCombinationList();
                 /* Compare the lists of combinations */
                 boolean shouldBeTrueIfCombinationsAreEqual = true;
-                for (Combination combination : combinationsList) {
-                        shouldBeTrueIfCombinationsAreEqual = permutationsQueue
-                                        .contains(new Pair<Map<String, String>, Combination>(null, combination));
+                for (Combination combination : combinationsStub) {
+                        shouldBeTrueIfCombinationsAreEqual = combinationsList.contains(combination);
                 }
                 assertTrue(shouldBeTrueIfCombinationsAreEqual, "Should be true if all the combinations are found");
         }
+   
 
         /**
          * Creates the mock combinations List

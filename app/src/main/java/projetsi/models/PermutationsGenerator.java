@@ -130,7 +130,21 @@ public class PermutationsGenerator {
         }
         return str;
     }
-
+    
+    /**
+     * Calculates the score of one given combination
+     * Fetches the occurences of each word from the keywordsMap
+     * 
+     * @param combination the combination which we want to attribute score to
+     */
+    public void calculateOneScore(Combination combination) {
+        int score = 0;
+        for (String word : combination.getFirst()) {
+            score += keywordsMap.get(word);
+        }
+        combination.setSecond((int) (score / combination.getFirst().size()));
+    }
+    
     /**
      * Computes the combinations of keywords
      */
@@ -159,18 +173,5 @@ public class PermutationsGenerator {
         }
     }
 
-    /**
-     * Calculates the score of one given combination
-     * Fetches the occurences of each word from the keywordsMap
-     * 
-     * @param combination the combination which we want to attribute score to
-     */
-    public void calculateOneScore(Combination combination) {
-        int score = 0;
-        for (String word : combination.getFirst()) {
-            score += keywordsMap.get(word);
-        }
-        combination.setSecond((int) (score / combination.getFirst().size()));
-    }
 
 }
