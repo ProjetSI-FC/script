@@ -13,16 +13,20 @@ import projetsi.interfaces.FileMetadataWithScore;
 
 public class Export{
     public static void exportToJson(SortedSet<String> keywords , Set<FileMetadataWithScore> files ){
+        String fileName = "ressources/output.json";
         JSONObject main = new JSONObject();
         JSONArray results = Export.filesToJsonArray(files);
         JSONArray keywordArray = Export.keywordsToJsonArray(keywords);
         main.put("keywords", keywordArray);
         main.put("results", results);
+        System.out.println(System.getProperty("user.dir"));
 
-        try (FileWriter fileWriter = new FileWriter("output.json")) {
+        try (FileWriter fileWriter = new FileWriter(fileName)) {
             fileWriter.write(main.toString());
+            fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
+  
         }
     }
 
@@ -56,5 +60,14 @@ public class Export{
         metadata.put("value", entry.getValue());
             }
         return metadata;
+    }
+
+    public static boolean isValidJsonObject(JSONObject jsonObject){
+        if ( jsonObject.has("keywords") && jsonObject.has("results")){
+            return true;
+        }
+        else {
+            return false ;
+        }
     }
 }
