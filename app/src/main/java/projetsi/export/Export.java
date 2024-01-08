@@ -10,16 +10,21 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import projetsi.interfaces.FileMetadataWithScore;
+import projetsi.interfaces.KeywordSearchMap;
+import projetsi.interfaces.SearchMapData;
 
 public class Export{
-    public static void exportToJson(SortedSet<String> keywords , Set<FileMetadataWithScore> files ){
+    private Export(){}
+    public static void exportToJson(KeywordSearchMap hash){
         String fileName = "ressources/output.json";
         JSONObject main = new JSONObject();
-        JSONArray results = Export.filesToJsonArray(files);
-        JSONArray keywordArray = Export.keywordsToJsonArray(keywords);
-        main.put("keywords", keywordArray);
-        main.put("results", results);
-        System.out.println(System.getProperty("user.dir"));
+        JSONArray array = new JSONArray();
+        for (SearchMapData searchMapData : hash) {
+            SortedSet<String> keywords = searchMapData.getKeywordsSet();
+            Set<FileMetadataWithScore> files = searchMapData.getFilesSet();
+            array.put(exportToJsonObject(keywords,files));
+        }
+        main.put("hashObject",array);
 
         try (FileWriter fileWriter = new FileWriter(fileName)) {
             fileWriter.write(main.toString());
@@ -28,6 +33,14 @@ public class Export{
             e.printStackTrace();
   
         }
+    }
+    private static JSONObject exportToJsonObject(SortedSet<String> keywords , Set<FileMetadataWithScore> files ){
+        JSONObject main = new JSONObject();
+        JSONArray results = Export.filesToJsonArray(files);
+        JSONArray keywordArray = Export.keywordsToJsonArray(keywords);
+        main.put("keywords", keywordArray);
+        main.put("results", results);
+        return main;
     }
 
     private static JSONArray keywordsToJsonArray(SortedSet<String> keywords){
@@ -63,7 +76,7 @@ public class Export{
     }
 
     public static boolean isValidJsonObject(JSONObject jsonObject){
-        if ( jsonObject.has("keywords") && jsonObject.has("results")){
+        if ( jsonObject.has("hashObject")){
             return true;
         }
         else {
