@@ -54,7 +54,7 @@ public class Import {
     }
     private static FileMetadataWithScore getFileMetadataFromJSON(JSONObject obj){
         SimpleFileMetadataWithScore file = new SimpleFileMetadataWithScore();
-        file.setScore(Integer.parseInt(obj.getString("score")));
+        file.setScore(obj.getInt("score"));
         JSONObject metadata = obj.getJSONObject("metadata");
         file.addMetadata(metadata.getString("hashkey"), metadata.getString("value"));
         return file;

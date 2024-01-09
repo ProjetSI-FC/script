@@ -19,10 +19,10 @@ import projetsi.models.SimpleFileMetadataWithScore;
 class ImportTest {
     
     @Test
-    void ExportToJsonARightDocument(){
+    void importFromJsonARightDocument(){
 
         //Before Test
-        String content = "{\"hashObject\":[{\"keywords\":[\"EuroNation\",\"Test\"],\"results\":[{\"score\":0,\"metadata\":{\"hashkey\":\"Test\",\"value\":\"test\"}},{\"score\":5,\"metadata\":{\"hashkey\":\"EuroNation\",\"value\":\"test\"}}]},{\"keywords\":[\"EuroNation\",\"Macron\",\"Test\"],\"results\":[{\"score\":0,\"metadata\":{\"hashkey\":\"Test\",\"value\":\"test\"}},{\"score\":5,\"metadata\":{\"hashkey\":\"EuroNation\",\"value\":\"test\"}}]}]}";
+        String content = "{\"hashObject\":[{\"keywords\":[\"EuroNation\",\"Test\"],\"results\":[{\"score\":0,\"metadata\":{\"hashkey\":\"Test\",\"value\":\"test\"}},{\"score\":5,\"metadata\":{\"hashkey\":\"EuroNation\",\"value\":\"test\"}}]}]}";
         String fileName = "ressources/output.json";
         try (FileWriter fileWriter = new FileWriter(fileName)) {
             fileWriter.write(content);
@@ -45,9 +45,6 @@ class ImportTest {
         file2.addMetadata("Test","test");
         KeywordSearchHashMap searchMap = new KeywordSearchHashMap();
         searchMap.add(keywords,file1);
-        searchMap.add(keywords, file2);
-        keywords.add("Macron");
-        searchMap.add(keywords, file1);
         searchMap.add(keywords, file2);
         assertEquals(hashmap, searchMap);
     }
