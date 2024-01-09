@@ -36,7 +36,6 @@ public class Import {
             JSONArray keywordsArray = obj.getJSONArray("keywords");
             SortedSet<String> keywords = getKeywordsFromJSON(keywordsArray);
             JSONArray resultArray = obj.getJSONArray("results");
-            hashMap = new KeywordSearchHashMap();
             for(int j=0 ; j < resultArray.length(); j++){
                 FileMetadataWithScore fileMetadata = getFileMetadataFromJSON(resultArray.getJSONObject(j));
                 hashMap.add(keywords,fileMetadata);
