@@ -45,4 +45,14 @@ public class KeywordSearchHashMap implements KeywordSearchMap {
             keywordMap.put(keywords, data);
         }
     }
+
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof KeywordSearchHashMap)) {
+            return false;
+        }
+        KeywordSearchHashMap keywordSearchHashMap = (KeywordSearchHashMap) o;
+        return Objects.equals(keywordMap, keywordSearchHashMap.keywordMap);
+    }
 }
