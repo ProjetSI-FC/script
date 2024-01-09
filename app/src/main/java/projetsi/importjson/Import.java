@@ -24,7 +24,8 @@ public class Import {
         JSONArray array = null;
         try (InputStream fileReader = new FileInputStream("ressources/output.json")) {
             JSONTokener tokener = new JSONTokener(fileReader);
-            array = new JSONArray(tokener);
+            JSONObject obj = new JSONObject(tokener);
+            array = obj.getJSONArray("hashObject");
         } catch (IOException e) {
             e.printStackTrace();
   
