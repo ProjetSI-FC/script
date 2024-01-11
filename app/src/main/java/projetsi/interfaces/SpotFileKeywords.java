@@ -9,7 +9,7 @@ import projetsi.models.Pair;
  * Interface class for the result of the spot file parser (keywords and metadatas)
  */
 public interface SpotFileKeywords {
-    
+
     /**
      * @return The list of keywords with their number of occurrences
      */
