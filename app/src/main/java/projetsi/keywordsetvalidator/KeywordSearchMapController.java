@@ -29,22 +29,22 @@ public class KeywordSearchMapController {
     }
 
     public KeywordSearchMap createSearchMapFromKeywordsPermutations(
-            BlockingQueue<Pair<SortedSet<String>, Integer>> permutations, Map<String, String> metadatas,
+            BlockingQueue<Pair<Pair<SortedSet<String>, Integer>, Map<String, String>>> permutations,
             int threshold) throws InterruptedException {
         KeywordSearchHashMap keywordsMap = new KeywordSearchHashMap();
         try {
             while (true) {
-                Pair<SortedSet<String>, Integer> permutation = permutations.take();
-                if (permutation.getFirst() == null) {
+                Pair<Pair<SortedSet<String>, Integer>, Map<String, String>> permutation = permutations.take();
+                if (permutation.getFirst().getFirst() == null) {
                     break;
                 }
-                if (permutation.getSecond() >= threshold) {
+                if (permutation.getFirst().getSecond() >= threshold) {
                     SimpleFileMetadataWithScore metadata = new SimpleFileMetadataWithScore();
-                    metadata.setScore(permutation.getSecond());
-                    for (Map.Entry<String, String> items : metadatas.entrySet()) {
+                    metadata.setScore(permutation.getFirst().getSecond());
+                    for (Map.Entry<String, String> items : permutation.getSecond().entrySet()) {
                         metadata.addMetadata(items.getKey(), items.getValue());
                     }
-                    keywordsMap.add(permutation.getFirst(), metadata);
+                    keywordsMap.add(permutation.getFirst().getFirst(), metadata);
                 }
             }
         } catch (InterruptedException e) {
