@@ -2,6 +2,8 @@ package projetsi.parser;
 
 import java.io.File;
 import java.util.concurrent.BlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import projetsi.interfaces.SpotFileKeywords;
 
@@ -20,9 +22,11 @@ public class SpotFileKeywordProducer implements Runnable {
     public void run() {
         try {
             produce();
+            System.out.println("Produced a spot file keywords");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            System.err.println("Thread interrupted: " + e.getMessage());
+            Logger.getLogger(SpotFileKeywordProducer.class.getName()).log(Level.SEVERE,
+                    String.format("Thread interrupted: %s", e.getMessage()));
         }
     }
 

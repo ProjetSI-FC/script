@@ -84,7 +84,12 @@ class PermutationsTest {
                 classUnderTest.setKeywordsMap(keywordsMap);
                 /* Computes the combinations */
                 BlockingQueue<Pair<Map<String, String>, Combination>> permutationsQueue = new LinkedBlockingQueue<>();
-                classUnderTest.computePermutations(permutationsQueue);
+                try {
+                        classUnderTest.computePermutations(permutationsQueue);
+                } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        assertTrue(false, "Should not throw an exception");
+                }
 
                 /* Get the combinations from the queue */
                 List<Combination> combinationsList = new ArrayList<>();
@@ -101,7 +106,6 @@ class PermutationsTest {
                 }
                 assertTrue(shouldBeTrueIfCombinationsAreEqual, "Should be true if all the combinations are found");
         }
-   
 
         /**
          * Creates the mock combinations List

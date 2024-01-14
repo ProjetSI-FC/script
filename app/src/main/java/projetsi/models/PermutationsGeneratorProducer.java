@@ -1,13 +1,17 @@
 package projetsi.models;
 
+import java.util.Map;
+import java.util.SortedSet;
 import java.util.concurrent.BlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import projetsi.interfaces.SpotFileKeywords;
 
 public class PermutationsGeneratorProducer implements Runnable {
 
     private BlockingQueue<SpotFileKeywords> spotFileKeywordsQueue;
-    private BlockingQueue<PermutationsGenerator> PermutationQueue;
+    private BlockingQueue<Pair<Pair<SortedSet<String>, Integer>, Map<String, String>>> permutationQueue;
 
     /**
      * Constructor with 2 parameters
@@ -16,15 +20,16 @@ public class PermutationsGeneratorProducer implements Runnable {
      * @param queue
      */
     public PermutationsGeneratorProducer(BlockingQueue<SpotFileKeywords> spotFileKeywordsQueue,
-            BlockingQueue<PermutationsGenerator> queue) {
+            BlockingQueue<Pair<Pair<SortedSet<String>, Integer>, Map<String, String>>> queue) {
         this.spotFileKeywordsQueue = spotFileKeywordsQueue;
-        this.PermutationQueue = queue;
+        this.permutationQueue = queue;
     }
 
     @Override
     public void run() {
 
         produce();
+        System.out.println("Produced a permutation");
 
         // try {
         // produce();
@@ -41,17 +46,17 @@ public class PermutationsGeneratorProducer implements Runnable {
     }
 
     private void produce() {
-        PermutationsGenerator PermutationsGenerator = new PermutationsGenerator();
         while (!spotFileKeywordsQueue.isEmpty()) {
             SpotFileKeywords spotFileKeywords;
             try {
                 spotFileKeywords = spotFileKeywordsQueue.take();
-                PermutationsGenerator = new PermutationsGenerator(spotFileKeywords);
+                PermutationsGenerator permutationsGenerator = new PermutationsGenerator(spotFileKeywords);
                 /* Compute permutations - The method is filling the permutations queue */
-                PermutationsGenerator.computePermutations(PermutationQueue);
+                permutationsGenerator.computePermutations(permutationQueue);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                System.err.println("Thread interrupted: " + e.getMessage());
+                Logger.getLogger(PermutationsGeneratorProducer.class.getName()).log(Level.SEVERE,
+                        String.format("Thread interrupted: %s", e.getMessage()));
             }
         }
     }

@@ -13,28 +13,29 @@ import projetsi.interfaces.FileMetadataWithScore;
 import projetsi.interfaces.KeywordSearchMap;
 import projetsi.interfaces.SearchMapData;
 
-public class Export{
-    private Export(){}
-    public static void exportToJson(KeywordSearchMap hash){
+public class Export {
+    private Export() {
+    }
+
+    public static void exportToJson(KeywordSearchMap hash) {
         String fileName = "ressources/output.json";
         JSONObject main = new JSONObject();
         JSONArray array = new JSONArray();
         for (SearchMapData searchMapData : hash) {
             SortedSet<String> keywords = searchMapData.getKeywordsSet();
             Set<FileMetadataWithScore> files = searchMapData.getFilesSet();
-            array.put(exportToJsonObject(keywords,files));
+            array.put(exportToJsonObject(keywords, files));
         }
-        main.put("hashObject",array);
+        main.put("hashObject", array);
 
         try (FileWriter fileWriter = new FileWriter(fileName)) {
             fileWriter.write(main.toString());
-            fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
-  
         }
     }
-    private static JSONObject exportToJsonObject(SortedSet<String> keywords , Set<FileMetadataWithScore> files ){
+
+    private static JSONObject exportToJsonObject(SortedSet<String> keywords, Set<FileMetadataWithScore> files) {
         JSONObject main = new JSONObject();
         JSONArray results = Export.filesToJsonArray(files);
         JSONArray keywordArray = Export.keywordsToJsonArray(keywords);
@@ -43,20 +44,20 @@ public class Export{
         return main;
     }
 
-    private static JSONArray keywordsToJsonArray(SortedSet<String> keywords){
+    private static JSONArray keywordsToJsonArray(SortedSet<String> keywords) {
 
-    JSONArray keywordArray = new JSONArray();
-    
-    for(String keyword : keywords){
-        keywordArray.put(keyword);
-    }
-    return keywordArray;
+        JSONArray keywordArray = new JSONArray();
+
+        for (String keyword : keywords) {
+            keywordArray.put(keyword);
+        }
+        return keywordArray;
     }
 
-    private static JSONArray filesToJsonArray(Set<FileMetadataWithScore> files){
+    private static JSONArray filesToJsonArray(Set<FileMetadataWithScore> files) {
         JSONArray results = new JSONArray();
 
-        for( FileMetadataWithScore file : files){
+        for (FileMetadataWithScore file : files) {
             JSONObject fileMetaDataWithScore = new JSONObject();
             JSONObject metadata = metaDataToJSonObject(file.getFileMetadata());
             fileMetaDataWithScore.put("metadata", metadata);
@@ -66,21 +67,16 @@ public class Export{
         return results;
     }
 
-    private static JSONObject metaDataToJSonObject(Map<String, String> fileMetaData){
+    private static JSONObject metaDataToJSonObject(Map<String, String> fileMetaData) {
         JSONObject metadata = new JSONObject();
-        for( Map.Entry<String,String> entry : fileMetaData.entrySet()) {
-                        metadata.put("hashkey", entry.getKey());
-        metadata.put("value", entry.getValue());
-            }
+        for (Map.Entry<String, String> entry : fileMetaData.entrySet()) {
+            metadata.put("hashkey", entry.getKey());
+            metadata.put("value", entry.getValue());
+        }
         return metadata;
     }
 
-    public static boolean isValidJsonObject(JSONObject jsonObject){
-        if ( jsonObject.has("hashObject")){
-            return true;
-        }
-        else {
-            return false ;
-        }
+    public static boolean isValidJsonObject(JSONObject jsonObject) {
+        return jsonObject.has("hashObject");
     }
 }

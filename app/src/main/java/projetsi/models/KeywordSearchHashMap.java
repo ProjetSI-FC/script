@@ -55,4 +55,8 @@ public class KeywordSearchHashMap implements KeywordSearchMap {
         KeywordSearchHashMap keywordSearchHashMap = (KeywordSearchHashMap) o;
         return Objects.equals(keywordMap, keywordSearchHashMap.keywordMap);
     }
+
+    public int hashCode() {
+        return Objects.hashCode(keywordMap);
+    }
 }

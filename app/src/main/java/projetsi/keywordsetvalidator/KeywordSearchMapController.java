@@ -34,7 +34,9 @@ public class KeywordSearchMapController {
         KeywordSearchHashMap keywordsMap = new KeywordSearchHashMap();
         try {
             while (true) {
+                System.out.println("Waiting for a permutation");
                 Pair<Pair<SortedSet<String>, Integer>, Map<String, String>> permutation = permutations.take();
+                System.out.println("Took a permutation");
                 if (permutation.getFirst().getFirst() == null) {
                     break;
                 }
