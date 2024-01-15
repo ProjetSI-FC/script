@@ -30,15 +30,22 @@ public class KeywordSearchMapController {
 
     public KeywordSearchMap createSearchMapFromKeywordsPermutations(
             BlockingQueue<Pair<Pair<SortedSet<String>, Integer>, Map<String, String>>> permutations,
-            int threshold) throws InterruptedException {
+            int threshold, int nbProducer) throws InterruptedException {
         KeywordSearchHashMap keywordsMap = new KeywordSearchHashMap();
         System.out.println("Test dans le truc : " + permutations.size());
+
+        int endedProducer = 0;
+
         try {
             while (true) {
                 Pair<Pair<SortedSet<String>, Integer>, Map<String, String>> permutation = permutations.take();
                 System.out.println("Avant le if " + permutation.getFirst());
                 if (permutation.getFirst() == null) {
-                    break;
+                    endedProducer++;
+                    if (endedProducer == nbProducer) {
+                        break;
+                    }
+                    continue;
                 }
                 if (permutation.getFirst().getSecond() >= threshold) {
                     SimpleFileMetadataWithScore metadata = new SimpleFileMetadataWithScore();
