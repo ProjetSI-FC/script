@@ -1,11 +1,13 @@
 package projetsi.parser;
 
 import java.io.File;
+import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import projetsi.interfaces.SpotFileKeywords;
+import projetsi.models.SimpleSpotFileKeywords;
 
 public class SpotFileKeywordProducer implements Runnable {
 
@@ -20,29 +22,21 @@ public class SpotFileKeywordProducer implements Runnable {
 
     @Override
     public void run() {
-        try {
-            produce();
-            System.out.println("Produced a spot file keywords");
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            Logger.getLogger(SpotFileKeywordProducer.class.getName()).log(Level.SEVERE,
-                    String.format("Thread interrupted: %s", e.getMessage()));
-        }
+        produce();
     }
 
-    private void produce() throws InterruptedException {
+    private void produce() {
         SpotParser spotParser = new SpotParser();
-        while (!spotFilePathsQueue.isEmpty()) {
-            String spotFilePath;
-            try {
-                spotFilePath = spotFilePathsQueue.take();
-                SpotFileKeywords spotFileKeywords = spotParser.getSpotFileKeywords(new File(spotFilePath));
-                spotFileKeywordsQueue.put(spotFileKeywords);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw e;
+        while (true) {
+            String spotFilePath = spotFilePathsQueue.poll();
+            if (spotFilePath == null) {
+                break;
             }
+            SpotFileKeywords spotFileKeywords = spotParser.getSpotFileKeywords(new File(spotFilePath));
+            spotFileKeywordsQueue.add(spotFileKeywords);
+            System.out.println("Produced a spot file keywords");
         }
+        spotFileKeywordsQueue.add(new SimpleSpotFileKeywords(null, null));
     }
 
 }

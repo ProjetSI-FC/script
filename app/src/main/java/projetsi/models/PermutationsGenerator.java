@@ -150,7 +150,8 @@ public class PermutationsGenerator {
 
     /**
      * Computes the combinations of keywords
-     * @throws Exception 
+     * 
+     * @throws Exception
      */
     public void computePermutations(BlockingQueue<Pair<Pair<SortedSet<String>, Integer>, Map<String, String>>> queue)
             throws InterruptedException {

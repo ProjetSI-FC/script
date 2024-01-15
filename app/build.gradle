@@ -8,6 +8,7 @@
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'application'
 }
 
@@ -25,6 +26,13 @@ dependencies {
     
     // https://mvnrepository.com/artifact/org.json/json
     implementation 'org.json:json:20231013'
+}
+
+jar {
+    // Include the main class in the manifest file.
+    manifest {
+        attributes 'Main-Class': 'projetsi.App'
+    }
 }
 
 application {

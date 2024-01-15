@@ -29,36 +29,28 @@ public class PermutationsGeneratorProducer implements Runnable {
     public void run() {
 
         produce();
-        System.out.println("Produced a permutation");
 
-        // try {
-        // produce();
-        // }
-        // catch (InterruptedException e) {
-        // Thread.currentThread().interrupt();
-        // System.err.println("Thread interrupted: " + e.getMessage());
-        // }
-        // catch (InterruptedException e) {
-        // Thread.currentThread().interrupt();
-        // System.err.println("Thread interrupted: " + e.getMessage());
-        // throw e;
-        // }
     }
 
     private void produce() {
-        while (!spotFileKeywordsQueue.isEmpty()) {
+        while (true) {
             SpotFileKeywords spotFileKeywords;
             try {
                 spotFileKeywords = spotFileKeywordsQueue.take();
+                if (spotFileKeywords.getKeywordsList() == null) {
+                    break;
+                }
                 PermutationsGenerator permutationsGenerator = new PermutationsGenerator(spotFileKeywords);
                 /* Compute permutations - The method is filling the permutations queue */
                 permutationsGenerator.computePermutations(permutationQueue);
+                System.out.println("Produced a permutation");
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 Logger.getLogger(PermutationsGeneratorProducer.class.getName()).log(Level.SEVERE,
                         String.format("Thread interrupted: %s", e.getMessage()));
             }
         }
+        permutationQueue.add(new Pair<>(null, null));
     }
 
 }

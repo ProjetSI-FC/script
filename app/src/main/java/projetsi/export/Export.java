@@ -18,7 +18,7 @@ public class Export {
     }
 
     public static void exportToJson(KeywordSearchMap hash) {
-        String fileName = "ressources/output.json";
+        String fileName = "output.json";
         JSONObject main = new JSONObject();
         JSONArray array = new JSONArray();
         for (SearchMapData searchMapData : hash) {

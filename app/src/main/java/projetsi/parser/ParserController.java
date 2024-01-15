@@ -31,7 +31,7 @@ public class ParserController {
         Path rootDir = Paths.get(rootPath);
         List<String> pathList = null;
         // Serialized path list file name
-        String serializedPathList = rootPath + regex + ".ser";
+        String serializedPathList = rootPath + "test" + ".ser";
 
         // Check if serialized path list exists
         File serializedFile = new File(serializedPathList);

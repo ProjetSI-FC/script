@@ -32,12 +32,12 @@ public class KeywordSearchMapController {
             BlockingQueue<Pair<Pair<SortedSet<String>, Integer>, Map<String, String>>> permutations,
             int threshold) throws InterruptedException {
         KeywordSearchHashMap keywordsMap = new KeywordSearchHashMap();
+        System.out.println("Test dans le truc : " + permutations.size());
         try {
             while (true) {
-                System.out.println("Waiting for a permutation");
                 Pair<Pair<SortedSet<String>, Integer>, Map<String, String>> permutation = permutations.take();
-                System.out.println("Took a permutation");
-                if (permutation.getFirst().getFirst() == null) {
+                System.out.println("Avant le if " + permutation.getFirst());
+                if (permutation.getFirst() == null) {
                     break;
                 }
                 if (permutation.getFirst().getSecond() >= threshold) {
@@ -46,6 +46,7 @@ public class KeywordSearchMapController {
                     for (Map.Entry<String, String> items : permutation.getSecond().entrySet()) {
                         metadata.addMetadata(items.getKey(), items.getValue());
                     }
+                    System.out.println("Adding to keywords map: " + permutation.getFirst().getFirst());
                     keywordsMap.add(permutation.getFirst().getFirst(), metadata);
                 }
             }

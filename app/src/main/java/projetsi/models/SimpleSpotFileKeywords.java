@@ -17,9 +17,7 @@ public class SimpleSpotFileKeywords implements SpotFileKeywords {
 
     @Override
     public List<Pair<String, Integer>> getKeywordsList() {
-        if (keywordsList != null)
-            return keywordsList;
-        throw new NullPointerException("Uninitialized field 'keywordsList'");
+        return keywordsList;
     }
 
     public void setKeywordsList(List<Pair<String, Integer>> keywordsList) {
