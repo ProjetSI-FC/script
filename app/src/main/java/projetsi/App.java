@@ -27,7 +27,7 @@ public class App {
         ParserController parserController = new ParserController();
         BlockingQueue<String> keywords = parserController
                 .getFilesToParse(
-                        "C:\\Users\\valen\\Documents\\01_Polytech\\5A\\S9\\ProjetSI\\index\\part1\\0a83db5c5d885ef7dbddeb5bc6ef09e640a26b1e\\20220410_182000",
+                        "C:\\Users\\valen\\Documents\\01_Polytech\\5A\\S9\\ProjetSI\\index\\part1\\0a83db5c5d885ef7dbddeb5bc6ef09e640a26b1e",
                         ParserController.SPOT_FILE_REGEX);
         int numCores = Runtime.getRuntime().availableProcessors();
         BlockingQueue<SpotFileKeywords> spotFileKeywordsQueue = new ArrayBlockingQueue<>(
@@ -54,7 +54,7 @@ public class App {
         // Sleep for 5 seconds
         KeywordSearchMapController keywordSearchMapController = new KeywordSearchMapController();
         KeywordSearchMap keywordSearchMap = keywordSearchMapController
-                .createSearchMapFromKeywordsPermutations(permutationQueue, 0);
+                .createSearchMapFromKeywordsPermutations(permutationQueue, 19, numCores);
 
         System.out.println("Ended permutations");
 

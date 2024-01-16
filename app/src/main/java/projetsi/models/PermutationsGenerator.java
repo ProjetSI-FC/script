@@ -157,6 +157,7 @@ public class PermutationsGenerator {
             throws InterruptedException {
         List<String> keywords = new ArrayList<>(getKeywordsMap().keySet());
         int n = keywords.size();
+        System.out.println("Test de baptiste : " + n);
         /* Go trough keywords */
         for (int i = 1; i < (1 << n); i++) { // 1 << n is equivalent to 2^n
             /* Creates a combination */
@@ -177,5 +178,4 @@ public class PermutationsGenerator {
             }
         }
     }
-
 }

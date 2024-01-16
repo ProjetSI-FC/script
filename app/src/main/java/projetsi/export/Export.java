@@ -1,7 +1,10 @@
 package projetsi.export;
 
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
@@ -28,8 +31,9 @@ public class Export {
         }
         main.put("hashObject", array);
 
-        try (FileWriter fileWriter = new FileWriter(fileName)) {
-            fileWriter.write(main.toString());
+        try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(fileName),
+                StandardCharsets.UTF_8);) {
+            writer.write(main.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
