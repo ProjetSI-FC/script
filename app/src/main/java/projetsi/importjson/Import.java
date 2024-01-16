@@ -58,7 +58,9 @@ public class Import {
         SimpleFileMetadataWithScore file = new SimpleFileMetadataWithScore();
         file.setScore(obj.getInt("score"));
         JSONObject metadata = obj.getJSONObject("metadata");
-        file.addMetadata(metadata.getString("hashkey"), metadata.getString("value"));
+        for (String key : metadata.keySet()) {
+            file.addMetadata(key, metadata.getString(key));
+        }
         return file;
     }
 }

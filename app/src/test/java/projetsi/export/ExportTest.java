@@ -26,9 +26,9 @@ class ExportTest {
         keywords.add("Test");
         SimpleFileMetadataWithScore file1 = new SimpleFileMetadataWithScore();
         SimpleFileMetadataWithScore file2 = new SimpleFileMetadataWithScore();
-        file1.addMetadata("EuroNation", "test");
+        file1.addMetadata("date", "16/01/2024");
         file1.setScore(5);
-        file2.addMetadata("Test", "test");
+        file2.addMetadata("chaine", "M6");
         KeywordSearchHashMap searchMap = new KeywordSearchHashMap();
         searchMap.add(keywords, file1);
         searchMap.add(keywords, file2);

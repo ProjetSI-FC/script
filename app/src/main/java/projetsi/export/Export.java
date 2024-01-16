@@ -1,7 +1,6 @@
 package projetsi.export;
 
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
@@ -74,8 +73,7 @@ public class Export {
     private static JSONObject metaDataToJSonObject(Map<String, String> fileMetaData) {
         JSONObject metadata = new JSONObject();
         for (Map.Entry<String, String> entry : fileMetaData.entrySet()) {
-            metadata.put("hashkey", entry.getKey());
-            metadata.put("value", entry.getValue());
+            metadata.put(entry.getKey(), entry.getValue());
         }
         return metadata;
     }
