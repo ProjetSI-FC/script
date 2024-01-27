@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.math.BigInteger;
 
 import projetsi.interfaces.SpotFileKeywords;
 
@@ -152,12 +153,11 @@ public class PermutationsGenerator {
         List<String> keywords = new ArrayList<>(getKeywordsMap().keySet());
         int n = keywords.size();
         /* Go trough keywords */
-        for (int i = 1; i < (1 << n); i++) { // 1 << n is equivalent to 2^n
-            /* Creates a combination */
+        BigInteger limit = BigInteger.ONE.shiftLeft(n);   
+        for (BigInteger i = BigInteger.ONE; i.compareTo(limit) < 0 && i.bitCount() <= 4; i = i.add(BigInteger.ONE)) {
             Combination combination = new Combination();
             for (int j = 0; j < n; j++) {
-                if ((i & (1 << j)) != 0) {
-                    /* Add word to the combination */
+                if (i.testBit(j)) {
                     combination.addWord(keywords.get(j));
                 }
             }
