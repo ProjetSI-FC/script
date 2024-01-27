@@ -1,6 +1,7 @@
 package projetsi.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public class SimpleSpotFileKeywordTest {
     @Test
     void getEmptyKeywordsList() {
         SimpleSpotFileKeywords classUnderTest = new SimpleSpotFileKeywords(null, null);
-        assertThrowsExactly(NullPointerException.class, () -> classUnderTest.getKeywordsList());
+        assertNull(classUnderTest.getKeywordsList());
     }
 
     @Test

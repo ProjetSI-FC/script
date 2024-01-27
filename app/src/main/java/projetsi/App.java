@@ -54,7 +54,7 @@ public class App {
         // Sleep for 5 seconds
         KeywordSearchMapController keywordSearchMapController = new KeywordSearchMapController();
         KeywordSearchMap keywordSearchMap = keywordSearchMapController
-                .createSearchMapFromKeywordsPermutations(permutationQueue, 19, numCores);
+                .createSearchMapFromKeywordsPermutations(permutationQueue, 0, numCores);
 
         System.out.println("Ended permutations");
 

@@ -42,8 +42,7 @@ public class PermutationsGeneratorProducer implements Runnable {
                 }
                 PermutationsGenerator permutationsGenerator = new PermutationsGenerator(spotFileKeywords);
                 /* Compute permutations - The method is filling the permutations queue */
-                permutationsGenerator.computePermutations(permutationQueue);
-                System.out.println("Produced a permutation");
+                permutationsGenerator.computePermutations(permutationQueue, 2);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 Logger.getLogger(PermutationsGeneratorProducer.class.getName()).log(Level.SEVERE,

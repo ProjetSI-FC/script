@@ -10,6 +10,7 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'application'
+    id 'jacoco'
 }
 
 repositories {
@@ -43,4 +44,11 @@ application {
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+
+    // Enable Jacoco
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
 }

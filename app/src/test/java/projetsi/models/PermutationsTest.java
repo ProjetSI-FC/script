@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -83,25 +84,29 @@ class PermutationsTest {
                 keywordsMap.put("education", 0);
                 classUnderTest.setKeywordsMap(keywordsMap);
                 /* Computes the combinations */
-                BlockingQueue<Pair<Map<String, String>, Combination>> permutationsQueue = new LinkedBlockingQueue<>();
+                BlockingQueue<Pair<Pair<SortedSet<String>, Integer>, Map<String, String>>> permutationsQueue = new LinkedBlockingQueue<>();
                 try {
-                        classUnderTest.computePermutations(permutationsQueue);
+                        classUnderTest.computePermutations(permutationsQueue, 3);
                 } catch (InterruptedException e) {
                         e.printStackTrace();
                         assertTrue(false, "Should not throw an exception");
                 }
 
                 /* Get the combinations from the queue */
-                List<Combination> combinationsList = new ArrayList<>();
-                for (Pair<Map<String, String>, Combination> pair : permutationsQueue) {
-                        combinationsList.add(pair.getSecond());
-                        /* Display it*/ System.out.println(pair.getSecond().toString());
+                List<Pair<SortedSet<String>, Integer>> combinationsList = new ArrayList<>();
+                for (Pair<Pair<SortedSet<String>, Integer>, Map<String, String>> pair : permutationsQueue) {
+                        combinationsList.add(pair.getFirst());
+                        /* Display it */ System.out.println(pair.getFirst().toString());
                 }
-                /* Create all the stub combinations manually and put them into a list in order to compare */
-                List<Combination> combinationsStub = createMockCombinationList();
+                /*
+                 * Create all the stub combinations manually and put them into a list in order
+                 * to compare
+                 */
+                List<Pair<SortedSet<String>, Integer>> combinationsStub = createMockCombinationList();
                 /* Compare the lists of combinations */
                 boolean shouldBeTrueIfCombinationsAreEqual = true;
-                for (Combination combination : combinationsStub) {
+                for (Pair<SortedSet<String>, Integer> combination : combinationsStub) {
+                        System.out.println(combination.toString());
                         shouldBeTrueIfCombinationsAreEqual = combinationsList.contains(combination);
                 }
                 assertTrue(shouldBeTrueIfCombinationsAreEqual, "Should be true if all the combinations are found");
@@ -112,8 +117,8 @@ class PermutationsTest {
          * 
          * @return
          */
-        private List<Combination> createMockCombinationList() {
-                List<Combination> combinationsList = new ArrayList<>();
+        private List<Pair<SortedSet<String>, Integer>> createMockCombinationList() {
+                List<Pair<SortedSet<String>, Integer>> combinationsList = new ArrayList<>();
                 combinationsList.add(new Combination(
                                 new TreeSet<>(
                                                 Arrays.asList("education", "president", "rouge")),

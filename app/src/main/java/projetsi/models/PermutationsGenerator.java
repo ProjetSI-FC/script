@@ -153,13 +153,16 @@ public class PermutationsGenerator {
      * 
      * @throws Exception
      */
-    public void computePermutations(BlockingQueue<Pair<Pair<SortedSet<String>, Integer>, Map<String, String>>> queue)
+    public void computePermutations(BlockingQueue<Pair<Pair<SortedSet<String>, Integer>, Map<String, String>>> queue,
+            int limit)
             throws InterruptedException {
         List<String> keywords = new ArrayList<>(getKeywordsMap().keySet());
         int n = keywords.size();
-        System.out.println("Test de baptiste : " + n);
         /* Go trough keywords */
         for (int i = 1; i < (1 << n); i++) { // 1 << n is equivalent to 2^n
+            if (Integer.bitCount(i) > limit) {
+                continue;
+            }
             /* Creates a combination */
             Combination combination = new Combination();
             for (int j = 0; j < n; j++) {

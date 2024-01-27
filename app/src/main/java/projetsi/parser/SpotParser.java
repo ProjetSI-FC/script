@@ -58,7 +58,6 @@ public class SpotParser {
         Map<String, String> spotFileMetadatas = new HashMap<>();
         spotFileMetadatas.put("file", spotJSON.getString(SPOT_FILE_KEY));
         spotFileMetadatas.putAll(getSpotFileMetadatas(spotFile));
-        System.out.println(spotFileMetadatas);
 
         // Add the list of keywords and their occurrences to the SpotFileKeywords object
         return new SimpleSpotFileKeywords(keywordsList, spotFileMetadatas);
@@ -77,9 +76,7 @@ public class SpotParser {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(";");
-                System.out.println(hash + ":" + parts[0] + ".");
                 if (parts[0].equals(hash)) {
-                    System.out.println("Found hash ==================================================================");
                     output.put("channel", parts[1]);
                     output.put("program", parts[2]);
                     break;
