@@ -1,8 +1,6 @@
 package projetsi.importjson;
 
 import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.SortedSet;
@@ -16,10 +14,13 @@ import projetsi.interfaces.FileMetadataWithScore;
 import projetsi.models.KeywordSearchHashMap;
 import projetsi.models.SimpleFileMetadataWithScore;
 
-
-
 public class Import {
-    public static KeywordSearchHashMap importHashMapFromJson(){
+
+    private Import() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static KeywordSearchHashMap importHashMapFromJson() {
 
         JSONArray array = null;
         try (InputStream fileReader = new FileInputStream("ressources/output.json")) {
@@ -28,34 +29,38 @@ public class Import {
             array = obj.getJSONArray("hashObject");
         } catch (IOException e) {
             e.printStackTrace();
-  
+            throw new NullPointerException("Error while reading JSON file");
         }
         KeywordSearchHashMap hashMap = new KeywordSearchHashMap();
-        for (int i=0; i < array.length(); i++){
+        for (int i = 0; i < array.length(); i++) {
             JSONObject obj = array.getJSONObject(i);
             JSONArray keywordsArray = obj.getJSONArray("keywords");
             SortedSet<String> keywords = getKeywordsFromJSON(keywordsArray);
             JSONArray resultArray = obj.getJSONArray("results");
-            for(int j=0 ; j < resultArray.length(); j++){
+            for (int j = 0; j < resultArray.length(); j++) {
                 FileMetadataWithScore fileMetadata = getFileMetadataFromJSON(resultArray.getJSONObject(j));
-                hashMap.add(keywords,fileMetadata);
+                hashMap.add(keywords, fileMetadata);
             }
         }
         return hashMap;
     }
-    private static SortedSet<String> getKeywordsFromJSON(JSONArray array){
+
+    private static SortedSet<String> getKeywordsFromJSON(JSONArray array) {
         SortedSet<String> keywords = new TreeSet<>();
-        for(int i = 0; i < array.length(); i++){
+        for (int i = 0; i < array.length(); i++) {
             String keyword = array.getString(i);
             keywords.add(keyword);
         }
         return keywords;
     }
-    private static FileMetadataWithScore getFileMetadataFromJSON(JSONObject obj){
+
+    private static FileMetadataWithScore getFileMetadataFromJSON(JSONObject obj) {
         SimpleFileMetadataWithScore file = new SimpleFileMetadataWithScore();
         file.setScore(obj.getInt("score"));
         JSONObject metadata = obj.getJSONObject("metadata");
-        file.addMetadata(metadata.getString("hashkey"), metadata.getString("value"));
+        for (String key : metadata.keySet()) {
+            file.addMetadata(key, metadata.getString(key));
+        }
         return file;
     }
 }

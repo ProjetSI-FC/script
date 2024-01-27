@@ -1,9 +1,11 @@
 package projetsi.models;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 import java.util.concurrent.BlockingQueue;
 
 import projetsi.interfaces.SpotFileKeywords;
@@ -11,14 +13,14 @@ import projetsi.interfaces.SpotFileKeywords;
 public class PermutationsGenerator {
 
     private Map<String, Integer> keywordsMap;
-    private Map<String, String> SpotFileMetadatas;
+    private Map<String, String> spotFileMetadatas;
 
     /**
      * Default Constructor
      */
     public PermutationsGenerator() {
         this.keywordsMap = new HashMap<>();
-        this.SpotFileMetadatas = new HashMap<>();
+        this.spotFileMetadatas = new HashMap<>();
     }
 
     /***
@@ -27,10 +29,12 @@ public class PermutationsGenerator {
      * @param spotFileKeywords
      */
     public PermutationsGenerator(SpotFileKeywords spotFileKeywords) {
+        // Call default constructor
+        this();
         for (Pair<String, Integer> pair : spotFileKeywords.getKeywordsList()) {
             this.keywordsMap.put(pair.getFirst(), pair.getSecond());
         }
-        this.SpotFileMetadatas = spotFileKeywords.getSpotFileMetadatas();
+        this.spotFileMetadatas = spotFileKeywords.getSpotFileMetadatas();
     }
 
     /**
@@ -43,7 +47,7 @@ public class PermutationsGenerator {
         for (Pair<String, Integer> pair : keywordsList) {
             this.keywordsMap.put(pair.getFirst(), pair.getSecond());
         }
-        this.SpotFileMetadatas = metadatas;
+        this.spotFileMetadatas = metadatas;
     }
 
     /**
@@ -54,7 +58,7 @@ public class PermutationsGenerator {
      */
     public PermutationsGenerator(Map<String, Integer> keywordsmap, Map<String, String> metadatas) {
         this.keywordsMap = keywordsmap;
-        this.SpotFileMetadatas = metadatas;
+        this.spotFileMetadatas = metadatas;
     }
 
     /**
@@ -72,7 +76,7 @@ public class PermutationsGenerator {
      * @return SpotFileMetadatas
      */
     public Map<String, String> getSpotFileMetadatas() {
-        return SpotFileMetadatas;
+        return spotFileMetadatas;
     }
 
     /**
@@ -90,7 +94,7 @@ public class PermutationsGenerator {
      * @param map the map to set
      */
     public void setSpotFileMetadatas(Map<String, String> map) {
-        this.SpotFileMetadatas = map;
+        this.spotFileMetadatas = map;
     }
 
     /**
@@ -110,27 +114,27 @@ public class PermutationsGenerator {
      * @param value
      */
     public void addMetadata(String name, String value) {
-        this.SpotFileMetadatas.put(name, value);
+        this.spotFileMetadatas.put(name, value);
     }
 
     /**
      * Converts to string and displays the object
      */
     public String toString() {
-        String str = new String();
-        str += "\n keywordsMap : \n";
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append("\n keywordsMap : \n");
         for (Map.Entry<String, Integer> entry : keywordsMap.entrySet()) {
-            str += entry.getKey() + " ";
-            str += entry.getValue() + "\n";
+            strBuilder.append(entry.getKey() + " ");
+            strBuilder.append(entry.getValue() + "\n");
         }
-        str += "\n metadatas : \n";
-        for (Map.Entry<String, String> entry : SpotFileMetadatas.entrySet()) {
-            str += entry.getKey() + " : ";
-            str += entry.getValue() + "\n";
+        strBuilder.append("\n metadatas : \n");
+        for (Map.Entry<String, String> entry : spotFileMetadatas.entrySet()) {
+            strBuilder.append(entry.getKey() + " : ");
+            strBuilder.append(entry.getValue() + "\n");
         }
-        return str;
+        return strBuilder.toString();
     }
-    
+
     /**
      * Calculates the score of one given combination
      * Fetches the occurences of each word from the keywordsMap
@@ -142,21 +146,25 @@ public class PermutationsGenerator {
         for (String word : combination.getFirst()) {
             score += keywordsMap.get(word);
         }
-        combination.setSecond((int) (score / combination.getFirst().size()));
+        combination.setSecond((score / combination.getFirst().size()));
     }
-    
+
     /**
      * Computes the combinations of keywords
+     * 
+     * @throws Exception
      */
-    public void computePermutations(BlockingQueue queue) {
+    public void computePermutations(BlockingQueue<Pair<Pair<SortedSet<String>, Integer>, Map<String, String>>> queue)
+            throws InterruptedException {
         List<String> keywords = new ArrayList<>(getKeywordsMap().keySet());
         int n = keywords.size();
         /* Go trough keywords */
-        for (int i = 1; i < (1 << n); i++) { // 1 << n is equivalent to 2^n
+        BigInteger maxSize = BigInteger.ONE.shiftLeft(n);
+        for (BigInteger i = BigInteger.ONE; i.compareTo(maxSize) < 0 && i.bitCount() <= 4; i = i.add(BigInteger.ONE)) {
             /* Creates a combination */
             Combination combination = new Combination();
             for (int j = 0; j < n; j++) {
-                if ((i & (1 << j)) != 0) {
+                if (i.testBit(j)) {
                     /* Add word to the combination */
                     combination.addWord(keywords.get(j));
                 }
@@ -165,13 +173,10 @@ public class PermutationsGenerator {
             calculateOneScore(combination);
             /* Add combination to the queue */
             try {
-                queue.put(new Pair(SpotFileMetadatas, combination));
-            } catch (Exception e) {
-                // Gestion d'autres exceptions avec un message explicite
-                throw new RuntimeException("Erreur lors de l'ajout à la file d'attente : " + e.getMessage(), e);
+                queue.put(new Pair<>(combination, spotFileMetadatas));
+            } catch (InterruptedException e) {
+                throw new InterruptedException("Erreur lors de l'ajout à la file d'attente");
             }
         }
     }
-
-
 }

@@ -80,7 +80,8 @@ class KeywordSearchMapControllerTest {
                 Map<String, String> spotFileMetadatas = new HashMap<>();
                 spotFileMetadatas.put("test_key1", "test_value1");
 
-                BlockingQueue<Pair<SortedSet<String>, Integer>> permutations = new ArrayBlockingQueue<>(4);
+                BlockingQueue<Pair<Pair<SortedSet<String>, Integer>, Map<String, String>>> permutations = new ArrayBlockingQueue<>(
+                                4);
                 SortedSet<String> keywords1 = new TreeSet<>();
                 keywords1.add("test_keyword1");
                 keywords1.add("test_keyword2");
@@ -94,16 +95,15 @@ class KeywordSearchMapControllerTest {
                 keywords3.add("test_keyword8");
                 keywords3.add("test_keyword9");
 
-                permutations.add(new Pair<>(keywords1, 5));
-                permutations.add(new Pair<>(keywords2, 10));
-                permutations.add(new Pair<>(keywords3, 15));
-                permutations.add(new Pair<>(null, 0)); // end of permutations
+                permutations.add(new Pair<>(new Pair<>(keywords1, 5), spotFileMetadatas));
+                permutations.add(new Pair<>(new Pair<>(keywords2, 10), spotFileMetadatas));
+                permutations.add(new Pair<>(new Pair<>(keywords3, 15), spotFileMetadatas));
+                permutations.add(new Pair<>(null, null)); // end of permutations
 
                 KeywordSearchMap keywordsMap = null;
 
                 try {
-                        keywordsMap = classUnderTest.createSearchMapFromKeywordsPermutations(permutations,
-                                        spotFileMetadatas, 10);
+                        keywordsMap = classUnderTest.createSearchMapFromKeywordsPermutations(permutations, 10, 1);
                         assertNull(keywordsMap.get(keywords1), "keywords1 should not be in the keywordmap");
                         assertNotNull(keywordsMap.get(keywords2), "keywords2 should be in the keywordmap");
                         assertNotNull(keywordsMap.get(keywords3), "keywords3 should be in the keywordmap");

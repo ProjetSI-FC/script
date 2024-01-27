@@ -9,19 +9,15 @@ import java.util.TreeSet;
 
 import org.junit.jupiter.api.Test;
 
-import projetsi.export.Export;
-import projetsi.importjson.Import;
 import projetsi.models.KeywordSearchHashMap;
 import projetsi.models.SimpleFileMetadataWithScore;
 
-
-
 class ImportTest {
-    
-    @Test
-    void importFromJsonARightDocument(){
 
-        //Before Test
+    @Test
+    void importFromJsonARightDocument() {
+
+        // Before Test
         String content = "{\"hashObject\":[{\"keywords\":[\"EuroNation\",\"Test\"],\"results\":[{\"score\":0,\"metadata\":{\"hashkey\":\"Test\",\"value\":\"test\"}},{\"score\":5,\"metadata\":{\"hashkey\":\"EuroNation\",\"value\":\"test\"}}]}]}";
         String fileName = "ressources/output.json";
         try (FileWriter fileWriter = new FileWriter(fileName)) {
@@ -31,27 +27,29 @@ class ImportTest {
             e.printStackTrace();
         }
 
-        //Method to test
+        // Method to test
         KeywordSearchHashMap hashmap = Import.importHashMapFromJson();
 
-        //assertions
+        // assertions
         SortedSet<String> keywords = new TreeSet<>();
         keywords.add("EuroNation");
         keywords.add("Test");
         SimpleFileMetadataWithScore file1 = new SimpleFileMetadataWithScore();
         SimpleFileMetadataWithScore file2 = new SimpleFileMetadataWithScore();
-        file1.addMetadata("EuroNation","test");
+        file1.addMetadata("hashkey", "EuroNation");
+        file1.addMetadata("value", "test");
         file1.setScore(5);
-        file2.addMetadata("Test","test");
+        file2.addMetadata("hashkey", "Test");
+        file2.addMetadata("value", "test");
         KeywordSearchHashMap searchMap = new KeywordSearchHashMap();
-        searchMap.add(keywords,file1);
+        searchMap.add(keywords, file1);
         searchMap.add(keywords, file2);
         assertEquals(hashmap, searchMap);
     }
 
     @Test
-    void importFromComplexJSONARightDocument(){
-        //Before Test
+    void importFromComplexJSONARightDocument() {
+        // Before Test
         String content = "{\"hashObject\":[{\"keywords\":[\"EuroNation\",\"Test\"],\"results\":[{\"score\":0,\"metadata\":{\"hashkey\":\"Test\",\"value\":\"test\"}},{\"score\":5,\"metadata\":{\"hashkey\":\"EuroNation\",\"value\":\"test\"}}]},{\"keywords\":[\"EuroNation\",\"Macron\",\"Test\"],\"results\":[{\"score\":0,\"metadata\":{\"hashkey\":\"Test\",\"value\":\"test\"}},{\"score\":5,\"metadata\":{\"hashkey\":\"EuroNation\",\"value\":\"test\"}}]}]}";
         String fileName = "ressources/output.json";
         try (FileWriter fileWriter = new FileWriter(fileName)) {
@@ -61,19 +59,21 @@ class ImportTest {
             e.printStackTrace();
         }
 
-        //Method to test
+        // Method to test
         KeywordSearchHashMap hashmap = Import.importHashMapFromJson();
-        
+
         SortedSet<String> keywords = new TreeSet<>();
         keywords.add("EuroNation");
         keywords.add("Test");
         SimpleFileMetadataWithScore file1 = new SimpleFileMetadataWithScore();
         SimpleFileMetadataWithScore file2 = new SimpleFileMetadataWithScore();
-        file1.addMetadata("EuroNation","test");
+        file1.addMetadata("hashkey", "EuroNation");
+        file1.addMetadata("value", "test");
         file1.setScore(5);
-        file2.addMetadata("Test","test");
+        file2.addMetadata("hashkey", "Test");
+        file2.addMetadata("value", "test");
         KeywordSearchHashMap searchMap = new KeywordSearchHashMap();
-        searchMap.add(keywords,file1);
+        searchMap.add(keywords, file1);
         searchMap.add(keywords, file2);
         SortedSet<String> keywords2 = new TreeSet<>(keywords);
         keywords2.add("Macron");

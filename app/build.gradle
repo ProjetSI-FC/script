@@ -8,7 +8,9 @@
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'application'
+    id 'jacoco'
 }
 
 repositories {
@@ -27,6 +29,13 @@ dependencies {
     implementation 'org.json:json:20231013'
 }
 
+jar {
+    // Include the main class in the manifest file.
+    manifest {
+        attributes 'Main-Class': 'projetsi.App'
+    }
+}
+
 application {
     // Define the main class for the application.
     mainClass = 'projetsi.App'
@@ -35,4 +44,11 @@ application {
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+
+    // Enable Jacoco
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
 }

@@ -16,6 +16,7 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import projetsi.interfaces.SpotFileKeywords;
 
@@ -30,7 +31,7 @@ public class ParserController {
         Path rootDir = Paths.get(rootPath);
         List<String> pathList = null;
         // Serialized path list file name
-        String serializedPathList = rootPath + regex + ".ser";
+        String serializedPathList = rootPath + "test" + ".ser";
 
         // Check if serialized path list exists
         File serializedFile = new File(serializedPathList);
@@ -44,10 +45,11 @@ public class ParserController {
             } catch (IOException | ClassNotFoundException e) {
                 logger.warning("Error while reading serialized path list: " + serializedPathList);
                 e.printStackTrace();
+                throw new NullPointerException("Error while reading serialized path list: " + serializedPathList);
             }
         } else {
-            try {
-                List<Path> pathListFromStream = Files.walk(rootDir)
+            try (Stream<Path> pathStream = Files.walk(rootDir)) {
+                List<Path> pathListFromStream = pathStream
                         .filter(file -> file.getFileName().toString().matches(regex))
                         .toList();
                 pathList = new ArrayList<>();
@@ -63,7 +65,7 @@ public class ParserController {
             } catch (IOException e) {
                 logger.severe("Error while reading directory: " + rootPath);
                 e.printStackTrace();
-                System.exit(1);
+                throw new NullPointerException("Error while reading directory: " + rootPath);
             }
         }
 
